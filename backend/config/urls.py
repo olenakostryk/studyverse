@@ -16,6 +16,7 @@ urlpatterns = [
     path('api/courses/', include('courses.urls')),
     path('api/materials/', include('materials.urls')),
     path('api/knowledge/', include('knowledge_graph.urls')),
+    path('api/auth/', include('accounts.urls')),
 ]
 
 if settings.DEBUG:
