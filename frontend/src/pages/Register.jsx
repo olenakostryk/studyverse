@@ -40,21 +40,33 @@ export default function Register() {
   <div className="flex flex-col  px-2">
 
 
-<div className="flex flex-col items-center w-full mt-10 space-y-4">
+  <div
+  className="flex flex-col items-center w-full"
+  style={{
+    marginTop: 50,
+    gap: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  }}
+>
 
   {/* Username */}
-  <div 
-  style={{ marginBottom: 50 }}
+<div
   className="
-    w-[75%]
-    flex items-center 
-    px-5 h-[60px]
+    w-[300px]
+    flex items-center
+    px-5
+    h-[60px]
     rounded-[7px]
     bg-gradient-to-r from-[#0A2A4A] via-[#0B3B63] to-[#1B6FA8]
     shadow-[0_8px_25px_rgba(0,0,0,0.5)]
     overflow-hidden
-    pt-10
-  ">
+  "
+  style={{
+    marginLeft: "auto",
+    marginRight: "auto",
+  }}
+>
 
  <input
   placeholder="Username"
@@ -69,16 +81,22 @@ export default function Register() {
 
 
   {/* Password */}
-  <div 
-   className="
-    w-[75%]
-    flex items-center 
-     h-[60px]
+  <div
+  className="
+    w-[300px]
+    flex items-center
+    px-5
+    h-[60px]
     rounded-[7px]
     bg-gradient-to-r from-[#0A2A4A] via-[#0B3B63] to-[#1B6FA8]
     shadow-[0_8px_25px_rgba(0,0,0,0.5)]
     overflow-hidden
-  " >
+  "
+  style={{
+    marginLeft: "auto",
+    marginRight: "auto",
+  }}
+>
 
    <input
   type="password"
