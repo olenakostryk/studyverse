@@ -21,7 +21,9 @@ export default function App() {
       {/* Navbar only if logged in */}
       {token && !isAuthPage && (
         <nav style={{ padding: "16px", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
-          <Link to="/" style={{ color: "#97FEED", marginRight: "16px" }}>Dashboard</Link>
+         <Link to="/dashboard" style={{ color: "#97FEED", marginRight: "16px" }}>
+  Dashboard
+</Link>
           <Link to="/courses" style={{ color: "#97FEED", marginRight: "16px" }}>Courses</Link>
           <Link to="/graph/1" style={{ color: "#97FEED" }}>Graph</Link>
         </nav>

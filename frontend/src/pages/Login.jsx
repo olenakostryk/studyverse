@@ -3,17 +3,32 @@ import { Link, useNavigate } from "react-router-dom";
 import API from "../services/api";
 
 export default function Login() {
-  const [form, setForm] = useState({ username: "", password: "" });
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+  });
+
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    console.log("Sending login:", form);
 
     const res = await API.post("/auth/login/", form);
+
+    console.log("Login response:", res.data);
+
     localStorage.setItem("token", res.data.access);
 
-    navigate("/");
-  };
+    navigate("/graph/1");
+
+  } catch (error) {
+    console.log("LOGIN ERROR:", error.response?.data || error);
+    alert("Login failed");
+  }
+};
 
 return (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#071952] via-[#0B666A] to-[#071952] relative overflow-hidden">
@@ -34,7 +49,7 @@ return (
 <h2 className="text-center text-3xl font-medium text-[#E8FFFF]"  style={{ marginTop: 50 }} >
   Login
 </h2>
-
+<form onSubmit={handleSubmit}>
 {/* CENTERED CONTENT */}
 <div className="flex-1 flex flex-col justify-center">
 
@@ -66,12 +81,15 @@ return (
     marginRight: "auto",
   }}
 >
-  <input
-    type="text"
-    placeholder="Username"
-    className="bg-transparent w-full outline-none text-white placeholder-gray-400 border-none"
-    style={{ fontSize: 15 }}
-  />
+   <input
+                type="text"
+                placeholder="Username"
+                value={form.username}
+                onChange={(e) =>
+                  setForm({ ...form, username: e.target.value })
+                }
+                className="bg-transparent w-full outline-none text-white placeholder-gray-400 border-none"
+              />
 </div>
 
 {/* Password */}
@@ -91,12 +109,15 @@ return (
   marginRight: "auto",
 }}
 >
-  <input
-    type="password"
-    placeholder="Password"
-    className="bg-transparent w-full outline-none text-white placeholder-gray-400 border-none"
-    style={{ fontSize: 15 }}
-  />
+   <input
+                type="password"
+                placeholder="Password"
+                value={form.password}
+                onChange={(e) =>
+                  setForm({ ...form, password: e.target.value })
+                }
+                className="bg-transparent w-full outline-none text-white placeholder-gray-400 border-none"
+              />
 </div>
 
 
@@ -116,11 +137,12 @@ return (
 
 </div>
 
-{/* BOTTOM */}
+
 {/* BOTTOM */}
 <div className="flex flex-col items-center gap-4 pb-6">
 
   <button
+  type="submit"
     className="
       w-[75%] h-[55px] rounded-[7px]
       bg-gradient-to-r from-[#0A2A4A] via-[#0B3B63] to-[#1B6FA8]
@@ -139,6 +161,7 @@ return (
   </div>
 
 </div>
+</form>
     </div>
   </div>
 );

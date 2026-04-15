@@ -1,7 +1,10 @@
-from django.urls import path
-from .views import CourseListCreateView, CourseDetailView
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import CourseViewSet
+
+router = DefaultRouter()
+router.register(r'', CourseViewSet, basename='courses')
 
 urlpatterns = [
-    path('', CourseListCreateView.as_view(), name='course-list-create'),
-    path('<int:pk>/', CourseDetailView.as_view(), name='course-detail'),
+    path('', include(router.urls)),
 ]

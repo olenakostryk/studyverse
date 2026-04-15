@@ -79,10 +79,10 @@ rounded-[40px]
 
     {/* RIGHT: BUTTONS */}
     <div className="flex gap-3">
-      <Link className="px-4 py-1 rounded-full bg-white/20 hover:bg-white/30 transition">
+      <Link to="/register" className="px-4 py-1 rounded-full bg-white/20 hover:bg-white/30 transition">
         Sign up
       </Link>
-      <Link className="px-4 py-1 rounded-full bg-white/20 hover:bg-white/30 transition">
+      <Link to="/login" className="px-4 py-1 rounded-full bg-white/20 hover:bg-white/30 transition">
         Login
       </Link>
     </div>

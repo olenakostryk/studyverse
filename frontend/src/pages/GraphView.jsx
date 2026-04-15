@@ -98,6 +98,7 @@ export default function GraphView() {
     const fetchGraph = async () => {
       try {
         const res = await api.get(`/knowledge/graph/${courseId}/`);
+        console.log("GRAPH RESPONSE:", res.data);
 
         const nodes = (res.data.nodes || []).map((node) => ({
           id: node.id,
