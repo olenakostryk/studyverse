@@ -7,7 +7,6 @@ import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 
-
 export default function App() {
   const location = useLocation();
   const token = localStorage.getItem("token");
@@ -25,7 +24,7 @@ export default function App() {
   Dashboard
 </Link>
           <Link to="/courses" style={{ color: "#97FEED", marginRight: "16px" }}>Courses</Link>
-          <Link to="/graph/1" style={{ color: "#97FEED" }}>Graph</Link>
+          <Link to="/graph" style={{ color: "#97FEED" }}>Graph</Link>
         </nav>
       )}
 
@@ -55,7 +54,7 @@ export default function App() {
   />
 
   <Route
-    path="/graph/:courseId"
+    path="/graph"
     element={
       <ProtectedRoute>
         <GraphView />

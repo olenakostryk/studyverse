@@ -50,7 +50,6 @@ const getConnectedNodes = (selectedId, links) => {
 };
 
 export default function GraphView() {
-  const { courseId } = useParams();
   const fgRef = useRef();
   const [graphData, setGraphData] = useState(null);
   const [rawNodes, setRawNodes] = useState([]);
@@ -66,6 +65,8 @@ export default function GraphView() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [mode, setMode] = useState("courses");
+  const [selectedCourse, setSelectedCourse] = useState(null);
 
 
 //Useeffect for ai summary
@@ -92,43 +93,48 @@ export default function GraphView() {
 }, [selectedNode]);
 
 
+const loadGraph = (data) => {
+  setMode(data.mode);
 
+  const nodes = (data.nodes || []).map((node) => ({
+    id: node.id,
+    name: node.title,
+    type: node.type,
+    summary: node.summary || "",
+    difficulty: node.difficulty_score ?? 0,
+  }));
+
+  const links = (data.edges || []).map((edge) => ({
+    source: edge.source,
+    target: edge.target,
+    strength: edge.strength || 1,
+  }));
+
+  setRawNodes(nodes);
+  setGraphData({ nodes, links });
+};
 //useeffect to load graph data
-  useEffect(() => {
-    const fetchGraph = async () => {
-      try {
-        const res = await api.get(`/knowledge/graph/${courseId}/`);
-        console.log("GRAPH RESPONSE:", res.data);
+useEffect(() => {
+  const fetchCourses = async () => {
+    try {
+      const res = await api.get("/knowledge/graph/");
+      loadGraph(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-        const nodes = (res.data.nodes || []).map((node) => ({
-          id: node.id,
-          name: node.title,
-          summary: node.summary || "No summary yet.",
-          difficulty: node.difficulty_score ?? 0,
-        }));
+  fetchCourses();
+}, []);
 
-        const links = (res.data.edges || []).map((edge) => ({
-          source: edge.source,
-          target: edge.target,
-          strength: edge.strength || 1,
-        }));
-
-        setRawNodes(nodes);
-        setGraphData({ nodes, links });
-      } catch (err) {
-        console.error("GRAPH FETCH ERROR:", err);
-        setError(
-          err.response?.data
-            ? JSON.stringify(err.response.data)
-            : err.message || "Failed to load graph data"
-        );
-      }
-    };
-
-    fetchGraph();
-  }, [courseId]);
-
-
+const fetchCourseTopics = async (courseId) => {
+  try {
+    const res = await api.get(`/knowledge/graph/${courseId}/`);
+    loadGraph(res.data);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 //useeffet fo camera effect
  useEffect(() => {
@@ -229,7 +235,17 @@ d3Force={(forceGraph) => {
 d3AlphaDecay={0.02}
 d3VelocityDecay={0.25}
 
-  onNodeClick={(node) => setSelectedNode(node)}
+  onNodeClick={(node) => {
+  if (mode === "courses") {
+    setSelectedCourse(node);
+    fetchCourseTopics(node.id);
+
+    fgRef.current.centerAt(node.x, node.y, 1000);
+    fgRef.current.zoom(4, 1000);
+  } else {
+    setSelectedNode(node);
+  }
+}}
 
   linkWidth={(link) => {
     if (!selectedNode) return link.strength * 2;
@@ -256,7 +272,7 @@ d3VelocityDecay={0.25}
     const isConnected = connectedNodes.has(node.id);
 
     let opacity = 1;
-    let radius = 7;
+    let radius = node.type === "course" ? 20 : 7;
 
     if (selectedNode) {
       if (isSelected) {
@@ -338,7 +354,7 @@ d3VelocityDecay={0.25}
   <button
     onClick={async () => {
       setLoadingFlash(true);
-      const res = await api.get(`/knowledge/ai/flashcards/${selectedNode.id}/`);
+      const res = await api.get(`/knowledge/graph/`);
       setFlashcards(res.data.flashcards || res.data);
       setQuiz(null);
       setCurrentCard(0);
@@ -553,7 +569,16 @@ d3VelocityDecay={0.25}
         </div>
       </div>
 
-      
+      <button
+  onClick={async () => {
+    const res = await api.get("/knowledge/graph/");
+    loadGraph(res.data);
+    setSelectedNode(null);
+    setSelectedCourse(null);
+  }}
+>
+  Back to Universe
+</button>
     </>
   )}
 </aside>
