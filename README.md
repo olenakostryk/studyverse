@@ -71,3 +71,9 @@ This project is part of an ongoing effort to explore:
 AI in education
 Interactive UI/UX design
 Full-stack system architecture
+
+
+<img width="1920" height="949" alt="image" src="https://github.com/user-attachments/assets/b611fe4d-aed6-4c4b-b79d-f4d6b0e3d785" />
+<img width="1920" height="949" alt="image" src="https://github.com/user-attachments/assets/feba9ef1-174c-47ce-a76f-416e6936be62" />
+
+
